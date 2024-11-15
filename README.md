@@ -36,5 +36,7 @@
         <ValidationMessage For="() => Employee.FirstName" class="text-danger" />
         @rendermode InteractiveServer
     ```
+    - NOTE: Data will be fetched and load per each pagination.
 
 - ADDING SORTING, PAGINATION, AND FILTERING:
+    - 
