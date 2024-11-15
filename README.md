@@ -21,5 +21,20 @@
             - ALSO: Scaffolder to generate CRUD components using EF Core.
 
 - GENERATING CRUD COMPONENTS USING EF CORE:
+    - Create Employee class. Scaffold. Modify Db connection.
+    - Package Manager Console:
+    ```javascript
+        Add-Migration Init
+        Update-Database
+    ```
+    - [Bootstrap Icons](https://icons.getbootstrap.com/)
+    - [SVG to CSS converter](https://www.svgbackgrounds.com/tools/svg-to-css/)
+    - Validation logic is defined by the class-related annotations.
+    ```javascript
+        <DataAnnotationsValidator />
+        <ValidationSummary class="text-danger" role="alert"/>
+        <ValidationMessage For="() => Employee.FirstName" class="text-danger" />
+        @rendermode InteractiveServer
+    ```
 
 - ADDING SORTING, PAGINATION, AND FILTERING:
