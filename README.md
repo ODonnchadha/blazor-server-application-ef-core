@@ -39,4 +39,7 @@
     - NOTE: Data will be fetched and load per each pagination.
 
 - ADDING SORTING, PAGINATION, AND FILTERING:
-    - 
+
+- WORKING WITH RELATED DATA:
+
+- PUBLISHING YOUR APP TO AZURE:
