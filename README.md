@@ -39,7 +39,53 @@
     - NOTE: Data will be fetched and load per each pagination.
 
 - ADDING SORTING, PAGINATION, AND FILTERING:
+    - See codebase.
 
 - WORKING WITH RELATED DATA:
+    - "Hey compiler. This won't be null."
+    ```javascript
+        <PropertyColumn Property="employee => employee.Department!.Name" Title="Is Developer" />
+    ```
+    - `using` variable means that the variable will be disposed at the end of the method.
+    ```javascript
+        using var context = DbFactory.CreateDbContext();
+    ```
+    - NOTE: Foreign key is defined as cascading. Employees associated to a deleted department are also deleted within warning.
 
 - PUBLISHING YOUR APP TO AZURE:
+    - Code:
+        - Right-click within the project context menu and select `publish.`
+        - From the context dialog select "Azure."
+        - Select "Azure App Service (Linux)."
+        - Select a "App Service" instance.
+            - Create a new instance.
+                - Create a new resource group.
+                - Select a new hosting plan. And location. And size.
+        - AFter creation, severice is now selected in dialog.
+        - Select finish. And we now have a publish profile.
+        - Change deployment mode from "framework dependent" to "self- contained." 
+            - Ensure that everything the application needs is within the bundle.
+        - NOTE: Within properties folder is a publish profiles folder.
+        - Right-click within the project context menu and select `publish.`
+        - We are ready to publish. But the SQL service dependencies need a bit of work.
+    - Set up a database within Azure:
+        - Connect to a dependency. Select Azure SQL database.
+            - Create new. 
+                - Create a database server.
+                - Specify a user name and a password.
+            - And create.
+        - Enter user name and password via the connect to Azure SQL Database dialog.
+        - Copy connection string to clipboard.
+        - The next button provides a summary.
+    - Run the database migrations:
+        - Against the *new* Azure dB.
+        - Within the Azure UI. Attempt to login. Copy IP address from error.
+        - Within set server firewall and specify a firewall rule.
+        - Open the app settings. And update the connectionString.
+        - Via tools - Package manager. And apply the migrations.
+        ```javascript
+            Update-Database
+        ```
+    - Publish the application:
+        - Publish button. "Warming up your site."
+            - Publish succeeded. Navigate to website.

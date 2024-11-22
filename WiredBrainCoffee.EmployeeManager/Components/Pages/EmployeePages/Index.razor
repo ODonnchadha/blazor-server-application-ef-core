@@ -21,6 +21,7 @@
     </PropertyColumn>
     <PropertyColumn Property="employee => employee.LastName" Sortable="true" Title="Last Name" />
     <PropertyColumn Property="employee => employee.IsDeveloper" Title="Is Developer" />
+    <PropertyColumn Property="employee => employee.Department!.Name" Title="Department" />
 
     <TemplateColumn Context="employee">
         <a href="@($"employees/edit?id={employee.Id}")">Edit</a> |
@@ -41,5 +42,7 @@
     };
 
     string firstNameFilter = "";
-    IQueryable<Employee> employees => context.Employee.Where(e => e.FirstName!.Contains(firstNameFilter));
+    IQueryable<Employee> employees => context.Employee.Include(
+        e => e.Department).Where(
+            e => e.FirstName!.Contains(firstNameFilter));
 }

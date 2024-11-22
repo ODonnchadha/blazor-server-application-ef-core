@@ -17,20 +17,37 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="mb-3">
-                <label for="firstname" class="form-label">FirstName:</label> 
+                <label for="firstname" class="form-label">First Name:</label> 
                 <InputText id="firstname" @bind-Value="Employee.FirstName" class="form-control" aria-required="true"/> 
                 <ValidationMessage For="() => Employee.FirstName" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="lastname" class="form-label">LastName:</label> 
+                <label for="lastname" class="form-label">Last Name:</label> 
                 <InputText id="lastname" @bind-Value="Employee.LastName" class="form-control" aria-required="true"/> 
                 <ValidationMessage For="() => Employee.LastName" class="text-danger" /> 
             </div>        
             <div class="mb-3">
-                <label for="isdeveloper" class="form-label">IsDeveloper:</label> 
+                <label for="isdeveloper" class="form-label">Is Developer:</label> 
                 <InputCheckbox id="isdeveloper" @bind-Value="Employee.IsDeveloper" class="form-check-input" aria-required="true"/> 
                 <ValidationMessage For="() => Employee.IsDeveloper" class="text-danger" /> 
-            </div>        
+            </div>
+            <div class="mb-3">
+                <label for="department" class="form-label">Department:</label>
+                <InputSelect id="department"
+                             @bind-Value="Employee.DepartmentId"
+                             class="form-select"
+                             aria-required="true">
+                    <option>Select...</option>
+                    @if (departments is not null)
+                    {
+                        @foreach (var department in departments)
+                        {
+                            <option value="@department.Id">@department.Name</option>
+                        }
+                    }
+                </InputSelect>
+                <ValidationMessage For="() => Employee.DepartmentId" class="text-danger" />
+            </div>
             <button type="submit" class="btn btn-primary">Create</button>
         </EditForm>
     </div>
@@ -43,6 +60,18 @@
 @code {
     [SupplyParameterFromForm]
     private Employee Employee { get; set; } = new();
+
+    private Department[]? departments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        using var context = DbFactory.CreateDbContext();
+        departments = await context.Department.ToArrayAsync();
+        // Removed to ensure null value and then force the user 
+        //      to select a department via the associated options.
+        // Employee.DepartmentId = departments.FirstOrDefault()?.Id;
+    }
+
     private async Task AddEmployee()
     {
         using var context = DbFactory.CreateDbContext();

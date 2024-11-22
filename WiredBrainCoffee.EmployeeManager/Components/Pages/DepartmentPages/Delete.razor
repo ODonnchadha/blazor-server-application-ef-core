@@ -19,8 +19,12 @@
     else {
         <dl class="row">
             <dt class="col-sm-2">Name</dt>
-            <dd class="col-sm-10">@department.Name</dd>
+            <dd class="col-sm-10">@department!.Name</dd>
         </dl>
+        @if (message is not null)
+        {
+            <p class="alert alert-info">@message</p>
+        }
         <EditForm method="post" Model="department" OnValidSubmit="DeleteDepartment" FormName="delete" Enhance>
             <button type="submit" class="btn btn-danger" disabled="@(department is null)">Delete</button> |
             <a href="/departments">Back to List</a>
@@ -33,6 +37,8 @@
 
     [SupplyParameterFromQuery]
     private int Id { get; set; }
+
+    private string? message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,8 +54,17 @@
     private async Task DeleteDepartment()
     {
         using var context = DbFactory.CreateDbContext();
-        context.Department.Remove(department!);
-        await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/departments");
+
+        var count = context.Employee.Count(e => e.DepartmentId == department!.Id);
+        if (count > 0)
+        {
+            message = $"{count} employee{(count > 1 ? "s" : "")} associated with {department!.Name} department. This department cannot be deleted.";
+        }
+        else
+        {
+            context.Department.Remove(department!);
+            await context.SaveChangesAsync();
+            NavigationManager.NavigateTo("/departments");
+        }
     }
 }
